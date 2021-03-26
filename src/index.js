@@ -4,36 +4,24 @@ import './index.css';
 
 function Square(props) {
   const { value, click } = props
-
-
   return (
-    <button className="square" onClick={() => click()}>
+    <button className="square" onClick={click}>
       {value}
     </button>
   )
 }
 
 function Board() {
-  const status = "Next player: X"
-
   const [squares, setSquares] = useState(Array(9).fill(null))
-    // {
-    //   0: null,
-    //   1: null,
-    //   2: null,
-    //   3: null,
-    //   4: null,
-    //   5: null,
-    //   6: null,
-    //   7: null,
-    //   8: null
-    // }
-console.log('squares', squares)
+  const [xTurn, setXTurn] = useState(true)
+
+  const status = 'Next player: ' + (xTurn ? 'X' : 'O')
 
   function handleClick(i) {
-    squares[i] = 'X'
-    setSquares(() => squares)
-    console.log('edited', squares)
+    const newSquares = [...squares]
+    newSquares[i] = xTurn ? 'X' : 'O'
+    setSquares(() => newSquares)
+    setXTurn(!xTurn)
   }
 
   function renderSquare(i) {
