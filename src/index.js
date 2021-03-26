@@ -1,56 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
 function Square(props) {
+  const { value, click } = props
+
+
   return (
-    <button className="square">
-      {props.value}
+    <button className="square" onClick={() => click()}>
+      {value}
     </button>
   )
 }
 
-function renderSquare(i) {
-  return <Square value={i} />
-}
-    
-function Board () { 
+function Board() {
   const status = "Next player: X"
+
+  const [squares, setSquares] = useState(Array(9).fill(null))
+    // {
+    //   0: null,
+    //   1: null,
+    //   2: null,
+    //   3: null,
+    //   4: null,
+    //   5: null,
+    //   6: null,
+    //   7: null,
+    //   8: null
+    // }
+console.log('squares', squares)
+
+  function handleClick(i) {
+    squares[i] = 'X'
+    setSquares(() => squares)
+    console.log('edited', squares)
+  }
+
+  function renderSquare(i) {
+    return <Square value={squares[i]} click={() => handleClick(i)} />
+  }
+
   return (
-      <div>
-        <div className="status">{status}</div>
-        <div className="board-row">
-          {renderSquare(0)}
-          {renderSquare(1)}
-          {renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {renderSquare(3)}
-          {renderSquare(4)}
-          {renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {renderSquare(6)}
-          {renderSquare(7)}
-          {renderSquare(8)}
-        </div>
+    <div>
+      <div className="status">{status}</div>
+      <div className="board-row">
+        {renderSquare(0)}
+        {renderSquare(1)}
+        {renderSquare(2)}
       </div>
-    )
-  
+      <div className="board-row">
+        {renderSquare(3)}
+        {renderSquare(4)}
+        {renderSquare(5)}
+      </div>
+      <div className="board-row">
+        {renderSquare(6)}
+        {renderSquare(7)}
+        {renderSquare(8)}
+      </div>
+    </div>
+  )
+
 }
 
-function Game () {
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board />
-        </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
-        </div>
+function Game() {
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board />
       </div>
-    )
+      <div className="game-info">
+        <div>{/* status */}</div>
+        <ol>{/* TODO */}</ol>
+      </div>
+    </div>
+  )
 }
 
 // ========================================
