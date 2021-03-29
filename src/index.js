@@ -11,34 +11,15 @@ function Square(props) {
   )
 }
 
-function Board() {
-  const [squares, setSquares] = useState(Array(9).fill(null))
-  const [xTurn, setXTurn] = useState(true)
-
-  const winner = calculateWinner(squares)
-
-  let status =''
-  winner 
-  ? status = ' Winner: ' + winner
-  : status = 'Next player: ' + (xTurn ? 'X' : 'O')
-
-  function handleClick(i) {
-    const newSquares = [...squares]
-    if (calculateWinner(squares) || squares[i]) {
-      return
-    }
-    newSquares[i] = xTurn ? 'X' : 'O'
-    setSquares(() => newSquares)
-    setXTurn(!xTurn)
-  }
+function Board(props) {
+  const { squares, onClick } = props
 
   function renderSquare(i) {
-    return <Square value={squares[i]} click={() => handleClick(i)} />
+    return <Square value={squares[i]} click={() => onClick(i)} />
   }
 
   return (
     <div>
-      <div className="status">{status}</div>
       <div className="board-row">
         {renderSquare(0)}
         {renderSquare(1)}
@@ -60,13 +41,35 @@ function Board() {
 }
 
 function Game() {
+  const [xTurn, setXTurn] = useState(true)
+  const [history, setHistory] = useState([{ squares: Array(9).fill(null) }])
+  const current = history[history.length - 1]
+  const winner = calculateWinner(current.squares)
+  let status = ''
+  winner
+    ? status = ' Winner: ' + winner
+    : status = 'Next player: ' + (xTurn ? 'X' : 'O')
+
+  function handleClick(i) {
+    const squares = [...current.squares]
+    if (calculateWinner(squares) || squares[i]) {
+      return
+    }
+    squares[i] = xTurn ? 'X' : 'O'
+    setHistory(history.concat([{ squares: squares }]))
+    setXTurn(!xTurn)
+  }
+
   return (
     <div className="game">
       <div className="game-board">
-        <Board />
+        <Board
+          squares={current.squares}
+          onClick={(i) => handleClick(i)}
+        />
       </div>
       <div className="game-info">
-        <div>{/* status */}</div>
+        <div>{status}</div>
         <ol>{/* TODO */}</ol>
       </div>
     </div>
