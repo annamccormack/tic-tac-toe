@@ -1,10 +1,18 @@
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
   margin: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 ol, ul {
   padding-left: 30px;
+}
+
+.title {
+margin: 10px;
+font-size: 50px;
 }
 
 .board-row:after {
@@ -43,9 +51,9 @@ ol, ul {
 .game {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .game-info {
-  margin-left: 20px;
+  /* margin-left: 20px; */
 }
